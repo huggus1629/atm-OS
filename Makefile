@@ -3,7 +3,6 @@ CC=/home/hugo/opt/cross/bin/i686-elf-gcc
 CFLAGS=-ffreestanding -m32 -fno-pic
 LD=/home/hugo/opt/cross/bin/i686-elf-ld
 LDFLAGS=-s -T linker.ld
-# TODO linker script
 BOOT_DIR=src/boot
 KERNEL_DIR=src/kernel
 BIN_DIR=build/bin
@@ -38,8 +37,8 @@ $(BIN_DIR)/boot.bin: always
 kernel: $(BIN_DIR)/kernel.bin
 $(OBJ_DIR)/%.o: $(KERNEL_DIR)/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
-$(OBJ_DIR)/entry.o: $(KERNEL_DIR)/entry.asm
-	$(ASM) $< -f elf32 -o $@
+$(OBJ_DIR)/entry.o: always
+	$(ASM) $(KERNEL_DIR)/entry.asm -f elf32 -o $@
 $(BIN_DIR)/kernel.bin: $(OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $^
 
@@ -53,6 +52,7 @@ clean:
 ## always
 always: 
 	mkdir -p $(BIN_DIR)
+	mkdir -p $(OBJ_DIR)
 
 
 ## run
