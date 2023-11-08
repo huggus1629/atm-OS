@@ -15,7 +15,7 @@ extern void main()
         return;
     }
 
-    /*put_point((POINT) {0, 0}, WHITE);
+    put_point((POINT) {0, 0}, WHITE);
     put_point((POINT) {width-1, height-1}, WHITE);
 
     //put_rect((POINT) {0, 0}, (POINT) {width-1, height-1}, FILL, (COLOR) {255, 0, 0}, DUMMY_L);
@@ -32,13 +32,12 @@ extern void main()
     put_rect((POINT) {100, 100}, (POINT) {200, 200}, BOTH, (COLOR) {255, 200, 100}, (LINE_FMT) {(COLOR) {1346, 632, 200}, 1});
     put_rect((POINT) {275, 225}, (POINT) {350, 275}, BOTH, (COLOR) {156, 733, 526}, (LINE_FMT) {(COLOR) {567, 215, 834}, 3});
     put_rect((POINT) {150, 150}, (POINT) {300, 250}, BOTH, (COLOR) {234, 525, 12}, (LINE_FMT) {(COLOR) {564, 642, 568}, 5});
+ 
 
 
+    put_rect((POINT) {320, 240}, (POINT) {420, 320}, BOTH, (COLOR) {255, 0, 0}, (LINE_FMT) {(COLOR) {0, 255, 255}, 3});
 
-    put_rect((POINT) {320, 240}, (POINT) {420, 320}, BOTH, (COLOR) {255, 0, 0}, (LINE_FMT) {(COLOR) {0, 255, 255}, 3});*/
-
-    
-    puts("Hello World!");
+    puts("Hello world");
 
     return;
 }
