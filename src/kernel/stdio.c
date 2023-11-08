@@ -9,7 +9,7 @@ extern int put_pixel(uint16_t x, uint16_t y, COLOR c)
     if (x > width || y > height)
         return -1;
     
-    *(y * width + x + vram_start) = (PIXEL) {c, 0};
+    *(y * width + x + vram_start) = (PIXEL) {c};
 
     return 0;
 }

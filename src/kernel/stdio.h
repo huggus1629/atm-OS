@@ -30,7 +30,6 @@ typedef struct color
 typedef struct pixel
 {
     COLOR c;
-    char _;
 } PIXEL;
 
 typedef struct point
