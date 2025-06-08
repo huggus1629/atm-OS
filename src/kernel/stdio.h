@@ -3,8 +3,8 @@
 #ifndef STDIO_H
 #define STDIO_H
 
-#define width 640
-#define height 480
+#define width 1024
+#define height 768
 
 #define char_width 8
 #define char_height 16

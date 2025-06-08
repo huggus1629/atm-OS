@@ -1,8 +1,8 @@
 ASM=nasm
-CC=/home/hugo/opt/cross/bin/i686-elf-gcc
+CC=gcc
 CFLAGS=-ffreestanding -m32 -fno-pic
-LD=/home/hugo/opt/cross/bin/i686-elf-ld
-LDFLAGS=-s -T linker.ld
+LD=ld
+LDFLAGS=-m elf_i386 -s -T linker.ld
 BOOT_DIR=src/boot
 KERNEL_DIR=src/kernel
 BIN_DIR=build/bin

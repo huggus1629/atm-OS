@@ -76,7 +76,7 @@ extern int put_rect(POINT p1, POINT p2, MODE mode, COLOR f_col, LINE_FMT outline
 
 // global cursor
 // ----------------
-extern CURSOR cursor = {(POINT) {0, 0}, (POINT) {0, 0}, (STYLE) {{255, 255, 255}, (FONT_FMT) NORMAL}};
+CURSOR cursor = {(POINT) {0, 0}, (POINT) {0, 0}, (STYLE) {{255, 255, 255}, (FONT_FMT) NORMAL}};
 unsigned char print_mask[] = {128, 64, 32, 16, 8, 4, 2, 1};
 
 void cursor_set_exact_pos(CURSOR* crs)

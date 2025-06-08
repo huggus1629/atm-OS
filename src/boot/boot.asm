@@ -3,8 +3,8 @@
 
 KERNEL_LOCATION equ 0x8000
 
-WIDTH           equ 640     ; 8x16 font -> 80x30 character display
-HEIGHT          equ 480
+WIDTH           equ 1024     ; 8x16 font -> 80x30 character display
+HEIGHT          equ 768
 BPP             equ 24
 
 ;
