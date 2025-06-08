@@ -1,6 +1,7 @@
-megs: 128
+megs: 256
 romimage: file=/usr/share/bochs/BIOS-bochs-legacy
 vgaromimage: file=/usr/share/bochs/VGABIOS-lgpl-latest
+vga: extension=vbe
 floppya: 1_44=build/bin/atmos.img, status=inserted
 boot: floppy
 mouse: enabled=0

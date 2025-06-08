@@ -57,7 +57,7 @@ always:
 
 ## run
 run: atmos
-	qemu-system-i386 -drive file=$(BIN_DIR)/atmos.img,if=floppy,index=0,media=disk,format=raw -display gtk
+	qemu-system-i386 -m 256M -drive file=$(BIN_DIR)/atmos.img,if=floppy,index=0,media=disk,format=raw -display gtk
 
 
 ## debug
