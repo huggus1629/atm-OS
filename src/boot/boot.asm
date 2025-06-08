@@ -109,6 +109,31 @@ disk_read:
     jz      end         ; TODO maybe error handler for disk errors
     ret
 
+; Print string Function
+; ---------------------
+; [in] si: pointer to first char
+
+puts:
+    push    ax
+    push    bx
+    push    si
+
+.puts_loop:
+    lodsb               ; load byte from [si] into al, increment si
+    test    al, al      ; check for null terminator
+    jz      .puts_done
+    mov     ah, 0x0E    ; teletype output
+    mov     bh, 0       ; Page number
+    int     0x10
+    jmp     .puts_loop
+
+.puts_done:
+    pop     si
+    pop     bx
+    pop     ax
+    ret
+; --------------------
+
 
 ; Boot Code
 ; ==========
@@ -125,7 +150,10 @@ setup:
 main:
     mov     al, 0x03    ; 0x03 : 80x25 text mode 16 colors 
     int     0x10        ; clear screen
-    
+
+    mov     ah, 0x02    ; set starting cursor pos
+    xor     dx, dx
+    int     0x10
 
     ; get vbe info structure
     mov     al, 1
@@ -143,6 +171,9 @@ main:
     cmp     dword [vbe_info_struct], "VESA" ; check signature
     jne     check_done
     
+    mov     si, s_vbe_supported
+    call    puts
+
     mov     bx, word [vbe_info_struct + 14] ; load pointer into ax
 
     xor     si, si
@@ -157,6 +188,11 @@ check_mode_loop:
     cmp     ax, 0x004f
     popa
     jne     check_done
+
+    push    si
+    mov     si, s_checking_mode
+    call    puts
+    pop     si
 
     ; compare stats
     ; 1. lin. framebuf.? = (word [0x1000] >> 7) & 1
@@ -187,6 +223,12 @@ check_mode_loop:
     
     ; mode found!
     mov     byte [mode_found], 0
+
+    push    si
+    mov     si, s_mode_found
+    call    puts
+    pop     si
+
     push    ax
     push    bx
     mov     ax, word [0x1000 + 40]
@@ -245,13 +287,15 @@ pm_start:
     mov     gs, ax
     
     jmp     KERNEL_LOCATION
-    ;jmp     end
-
-
 
 end:
-    jmp     $
+    cli
+    hlt
 
+s_vbe_supported:    db  "VBE supported",13,10,0
+s_checking_mode:    db  "Checking mode...",13,10,0
+s_mode_found:       db  "Appropriate mode found!",13,10,0
+s_loaded_kernel:    db  "Kernel loaded to RAM",13,10,0
 
 times 512-2-1-4-($-$$) db 0x90
 framebuf:   dd  0       ; 0x7df9, 32bit ptr to framebuf
