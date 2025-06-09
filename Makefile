@@ -15,8 +15,8 @@ OBJS=$(OBJ_DIR)/entry.o $(patsubst $(KERNEL_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $
 atmos: $(BIN_DIR)/atmos.img
 
 $(BIN_DIR)/atmos.img: floppy_small
-	dd if=/dev/zero of=$(BIN_DIR)/atmos.img bs=512 count=2880
-	dd if=$(BIN_DIR)/floppy_small.img of=$(BIN_DIR)/atmos.img bs=512 conv=notrunc
+	dd if=/dev/zero of=$(BIN_DIR)/atmos.img bs=512 count=2880 status=progress
+	dd if=$(BIN_DIR)/floppy_small.img of=$(BIN_DIR)/atmos.img bs=512 conv=notrunc status=progress
 
 
 ## small floppy image
