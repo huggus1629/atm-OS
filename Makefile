@@ -29,7 +29,7 @@ $(BIN_DIR)/floppy_small.img: boot kernel
 ## bootloader
 boot: $(BIN_DIR)/boot.bin
 
-$(BIN_DIR)/boot.bin: always
+$(BIN_DIR)/boot.bin: $(BOOT_DIR)/boot.asm
 	$(ASM) $(BOOT_DIR)/boot.asm -f bin -o $(BIN_DIR)/boot.bin
 
 
@@ -37,7 +37,7 @@ $(BIN_DIR)/boot.bin: always
 kernel: $(BIN_DIR)/kernel.bin
 $(OBJ_DIR)/%.o: $(KERNEL_DIR)/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
-$(OBJ_DIR)/entry.o: always
+$(OBJ_DIR)/entry.o: $(KERNEL_DIR)/entry.asm
 	$(ASM) $(KERNEL_DIR)/entry.asm -f elf32 -o $@
 $(BIN_DIR)/kernel.bin: $(OBJS) 
 	$(LD) $(LDFLAGS) -o $@ $^
