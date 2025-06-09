@@ -171,6 +171,7 @@ main:
     cmp     dword [vbe_info_struct], "VESA" ; check signature
     jne     check_done
     
+    ; print "VBE supported" message
     mov     si, s_vbe_supported
     call    puts
 
@@ -189,6 +190,7 @@ check_mode_loop:
     popa
     jne     check_done
 
+    ; print "Checking mode..." for each mode
     push    si
     mov     si, s_checking_mode
     call    puts
@@ -229,6 +231,7 @@ check_mode_loop:
     call    puts
     pop     si
 
+    ; save LFB address to 0x7df9
     push    ax
     push    bx
     mov     ax, word [0x1000 + 40]
@@ -268,7 +271,8 @@ load_kernel:
     mov     cx, 3       ; kernel is in LBA 2 (CHS 0,0,3) and onwards
     call    disk_read   ; read kernel to 0x8000
 
-
+    ; load GDT and switch to protected mode
+    ; !! no BIOS interrupts in PM !!
     cli
     lgdt    [gdt_descriptor]
     mov     eax, cr0
