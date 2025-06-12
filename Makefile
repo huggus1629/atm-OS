@@ -4,12 +4,19 @@ CFLAGS=-ffreestanding -m32 -fno-pic
 LD=ld
 LDFLAGS=-m elf_i386 -s -T linker.ld
 BOOT_DIR=src/boot
+BOOT_INCLUDE_DIR=$(BOOT_DIR)/include
+ASMFLAGS=-I $(BOOT_INCLUDE_DIR) -f bin
 KERNEL_DIR=src/kernel
 BIN_DIR=build/bin
 OBJ_DIR=build/obj
 OBJS=$(OBJ_DIR)/entry.o $(patsubst $(KERNEL_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(KERNEL_DIR)/*.c))
 
-.PHONY: atmos floppy_small boot kernel clean always run debug
+.PHONY: testboot atmos floppy_small boot kernel clean always run debug
+
+testboot: testbootsec.bin
+testbootsec.bin: $(BOOT_DIR)/boot_stage1.asm $(BOOT_DIR)/vbe_ctlinfo.asm $(BOOT_INCLUDE_DIR)/*
+	$(ASM) $(ASMFLAGS) -o $@ $<
+
 
 ## 1.44MB floppy image
 atmos: $(BIN_DIR)/atmos.img
