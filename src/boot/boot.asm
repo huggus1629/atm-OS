@@ -3,7 +3,7 @@
 
 KERNEL_LOCATION equ 0x8000
 
-WIDTH           equ 1024     ; 8x16 font -> 80x30 character display
+WIDTH           equ 1024     ; 8x16 font -> 128x48 character display
 HEIGHT          equ 768
 BPP             equ 24
 
@@ -122,7 +122,7 @@ puts:
     lodsb               ; load byte from [si] into al, increment si
     test    al, al      ; check for null terminator
     jz      .puts_done
-    mov     ah, 0x0E    ; teletype output
+    mov     ah, 0x0e    ; teletype output
     mov     bh, 0       ; Page number
     int     0x10
     jmp     .puts_loop
