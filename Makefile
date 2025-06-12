@@ -11,12 +11,13 @@ BIN_DIR=build/bin
 OBJ_DIR=build/obj
 OBJS=$(OBJ_DIR)/entry.o $(patsubst $(KERNEL_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(KERNEL_DIR)/*.c))
 
-.PHONY: testboot atmos floppy_small boot kernel clean always run debug
+.PHONY: atmos floppy_small boot_stages kernel clean always run debug
 
-testboot: testbootsec.bin
-testbootsec.bin: $(BOOT_DIR)/boot_stage1.asm $(BOOT_DIR)/vbe_ctlinfo.asm $(BOOT_INCLUDE_DIR)/*
+BOOT_STAGE_SRCS := $(wildcard $(BOOT_DIR)/boot_stage*.asm)
+BOOT_STAGE_BINS := $(patsubst $(BOOT_DIR)/%.asm,$(BIN_DIR)/%.bin,$(BOOT_STAGE_SRCS))
+boot_stages: $(BOOT_STAGE_BINS)
+$(BIN_DIR)/%.bin: $(BOOT_DIR)/%.asm $(BOOT_INCLUDE_DIR)/*
 	$(ASM) $(ASMFLAGS) -o $@ $<
-
 
 ## 1.44MB floppy image
 atmos: $(BIN_DIR)/atmos.img

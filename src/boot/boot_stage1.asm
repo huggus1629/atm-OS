@@ -109,4 +109,4 @@ err_diskparams:
 times   510-($-$$)  db  0x90
 dw      0xaa55
 
-%include "src/boot/vbe_ctlinfo.asm"
+%include "vbe_ctlinfobuf.inc.asm"
