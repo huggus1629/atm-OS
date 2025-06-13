@@ -13,6 +13,7 @@ OBJS=$(OBJ_DIR)/entry.o $(patsubst $(KERNEL_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $
 
 .PHONY: atmos floppy_small boot_stages kernel clean always run debug
 
+## assemble each bootloader stage
 BOOT_STAGE_SRCS := $(wildcard $(BOOT_DIR)/boot_stage*.asm)
 BOOT_STAGE_BINS := $(patsubst $(BOOT_DIR)/%.asm,$(BIN_DIR)/%.bin,$(BOOT_STAGE_SRCS))
 boot_stages: $(BOOT_STAGE_BINS)
@@ -34,11 +35,10 @@ $(BIN_DIR)/floppy_small.img: boot kernel
 	cat $(BIN_DIR)/boot.bin $(BIN_DIR)/kernel.bin > $(BIN_DIR)/floppy_small.img
 
 
-## bootloader
+## concatenate all stages into single boot.bin
 boot: $(BIN_DIR)/boot.bin
-
-$(BIN_DIR)/boot.bin: $(BOOT_DIR)/boot.asm
-	$(ASM) $(BOOT_DIR)/boot.asm -f bin -o $(BIN_DIR)/boot.bin
+$(BIN_DIR)/boot.bin: boot_stages
+	cat $(BOOT_STAGE_BINS) > $@
 
 
 ## kernel

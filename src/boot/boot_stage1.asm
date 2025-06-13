@@ -20,8 +20,9 @@ start:
 
 ; ========================
 ; Include functions
-%include "puts.inc.asm"     ; ignore nasm extension error
+%include "puts.inc.asm"
 %include "a20test.inc.asm"
+%include "diskread.inc.asm"
 ; ------------------------
 ; Allocate variables (v_ = variable prefix, _b _w _d = byte/word/dword suffix)
 v_drivenumber_b:    db  0
@@ -33,6 +34,7 @@ v_head_p_cyl_b:     db  2
 
 ; String constants
 s_err_diskparams:   db  "Disk params loading error.",13,10,0
+s_err_diskerr:      db  "Disk error.",13,10,0
 s_a20test:  db  "Testing A20 Line...",13,10,0
 s_a20good:  db  "A20 Line enabled.",13,10,0
 s_a20bad:   db  "A20 Line disabled. Enabling...",13,10,0
@@ -80,8 +82,8 @@ stage_1:
     call    puts
 
     ;;;; testing only
-    mov     ax, 0x2400
-    int     0x15
+    ;mov     ax, 0x2400
+    ;int     0x15
 
     call    a20test ; test A20 line (CF set if disabled)
     jnc     .a20enabled ; if A20 enabled, jump there
@@ -94,15 +96,23 @@ stage_1:
     mov     si, s_a20good
     call    puts
 
+; TODO
 ; enable a20 line
 ; query vbe (see memory layout), save mode info for later use by kernel
+; ↑↑↑ maybe do this in stage 2 in case we run out of space (512 bytes)
 ; load stage 2, jmp
+
 hang:
     cli
     hlt
 
 err_diskparams:
     mov     si, s_err_diskparams
+    call    puts
+    jmp     hang
+
+err_diskread:
+    mov     si, s_err_diskerr
     call    puts
     jmp     hang
 

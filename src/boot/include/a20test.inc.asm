@@ -1,3 +1,4 @@
+bits    16
 ; Test if A20 line is enabled
 ; ---------------------------
 ; [out] CF set if disabled / clear if enabled

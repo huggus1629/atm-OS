@@ -1,3 +1,4 @@
+bits    16
 ; Print string Function
 ; ---------------------
 ; [in] si: pointer to first char
