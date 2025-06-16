@@ -6,7 +6,7 @@ bits    16
 ; [in] dl = drive number
 ; [in] es:bx = destination buffer
 ; ----------------------
-; [out] CF set on error
+; [out] CF set on error, status in ah
 ; if successful:
 ; [out] data in es:bx
 ; [out] ah = status (should be 0)
@@ -33,6 +33,8 @@ diskread:
     ; if CF set, retry max. 3 times
     dec     di
     jz      .diskread_done  ; if di=0, all tries exhausted
+    call    reset_diskctl   ; reset disk controller (recommended)
+    jc      .diskread_done  ; abort if reset fails
     pop     ax              ; restore ax and retry
     jmp     .diskread_retry
 .diskread_done:
@@ -88,7 +90,7 @@ lba_to_chs:
     pop     ax
     ret
 
-; Reset all disk controllers
+; Reset certain disk controllers
 ; --------------------------
 ; [in] dl: drive number or >=0x80 to reset all
 ; --------------------------
