@@ -13,6 +13,7 @@ bits    16
 a20test:
     cli
     pusha
+    push    es
 
     ; bx, si = 0
     xor     bx, bx
@@ -50,6 +51,7 @@ a20test:
     stc
 
 .a20test_done:
+    pop     es
     popa
     sti
     ret

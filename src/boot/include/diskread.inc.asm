@@ -26,20 +26,17 @@ diskread:
     mov     di, 3
     mov     ah, 0x02        ; read function
 .diskread_retry:
-    push    di  ; save current iteration
-    pusha
+    push    ax              ; save ax in case we need to retry
     int     0x13
-    popa
-    pop     di
     
     jnc     .diskread_done  ; if CF clear, we're done
     ; if CF set, retry max. 3 times
     dec     di
-    jnz     .diskread_retry ; if still within 3 tries, retry
-    ; if di=0, all tries exhausted
-    stc
-
+    jz      .diskread_done  ; if di=0, all tries exhausted
+    pop     ax              ; restore ax and retry
+    jmp     .diskread_retry
 .diskread_done:
+    add     sp, 2   ; ignore saved ax, we now need ax returned by int 0x13
     pop     di
     pop     si
     pop     dx
@@ -58,6 +55,7 @@ diskread:
 lba_to_chs:
     push    ax
     push    bx
+    push    dx
 
     mov     al, byte [v_sec_p_trk_b]    
     mul     byte [v_head_p_cyl_b]       ; SPT(al) * HPC = SPC(ax) (word)
@@ -74,17 +72,18 @@ lba_to_chs:
     div     byte [v_sec_p_trk_b]    ; remainder(ax) / SPT -> Head# in al, rem=Sector# - 1 in ah
     inc     ah  ; => al=Head#, ah=Sector#
 
-    mov     dh, al  ; Head# done
-    
     pop     cx      ; restore Cylinder#
                     ; => cx =   000000cc cccccccc
                     ; Cyl# low 8 bits need to be in ch
+    push    ax      ; save Head#
     mov     al, cl
     mov     cl, ch  ; swap cl, ch
     mov     ch, al  ; => cx =   cccccccc 000000cc
     shl     cl, 6   ; shift high 2 bits left by 6 so Cylinder# done
     or      cl, ah  ; Sector# done
-
+    pop     ax      ; restore Head# in al
+    pop     dx      ; restore dl
+    mov     dh, al  ; Head# done
     pop     bx
     pop     ax
     ret
