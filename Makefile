@@ -70,8 +70,4 @@ run: atmos
 
 ## debug
 debug: atmos
-	bochs -f bochs_config -q
-
-
-test: always
-	$(CC) $(CC_OPTIONS) $(KERNEL_DIR)/*.c -
+	bochs -f bochs_config -q -dbg_gui
