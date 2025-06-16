@@ -16,8 +16,8 @@ stage1_entry:
 ; ========================
 ; Offset table (base = 0x7c03)
 ; for functions used in next stage
-hang_ptr:   dw  hang    ; offset 0h
-puts_ptr:   dw  puts    ; offset 2h
+hang_ptr:       dw  hang        ; offset 0h
+puts_ptr:       dw  puts        ; offset 2h
 diskread_ptr:   dw  diskread    ; offset 4h
 ; ------------------
 ; Include functions
