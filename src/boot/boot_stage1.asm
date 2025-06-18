@@ -6,19 +6,30 @@
 ; Macro definitions
 %include "pointers.mac.asm"
 ; ==============================
+; Declare global symbols
+    global  hang            ; hang
+    global  puts            ; puts function
+    global  diskread        ; diskread function
+    global  err_diskread    ; disk error handler
+    global  v_drivenumber_b ; drive number
+; ==============================
+
+section     .stage1
 
     bits    16
-    org     0x7c00
+    ;org     0x7c00
 
 stage1_entry:
     jmp near    stage1_main ; JMP rel16 = 3 bytes
 
 ; ========================
-; Offset table (base = 0x7c03)
-; for functions used in next stage
-hang_ptr:       dw  hang        ; offset 0h
-puts_ptr:       dw  puts        ; offset 2h
-diskread_ptr:   dw  diskread    ; offset 4h
+; Pointer table (base = 0x7c03)
+; for functions & variables used in next stage
+hang_ptr:           dw  hang            ; offset 0h
+puts_ptr:           dw  puts            ; offset 2h
+diskread_ptr:       dw  diskread        ; offset 4h
+err_diskread_ptr:   dw  err_diskread    ; offset 6h
+drivenumber_b_ptr:  dw  v_drivenumber_b ; offset 8h
 ; ------------------
 ; Include functions
 %include "puts.inc.asm"
@@ -37,8 +48,8 @@ v_head_p_cyl_b:     db  2
 ; String constants
 s_err_diskparams:   db  "Disk geometry error",13,10,0
 s_err_diskerr:      db  "Disk error",13,10,0
-s_a20good:  db  "A20 enabled",13,10,0
-s_a20bad:   db  "A20 disabled. Enabling",13,10,0
+s_a20good:  db  "A20 on",13,10,0
+s_a20bad:   db  "A20 off. Enabling",13,10,0
 s_a20fail:  db  "A20 failure",13,10,0
 ; ========================
 
@@ -48,7 +59,7 @@ stage1_main:
     mov     ds, ax
     mov     es, ax
 
-    mov     bp, 0x7c00
+    mov     bp, STACK_TOP
     mov     sp, bp
 
     ; TESTING: turn off floppy motor

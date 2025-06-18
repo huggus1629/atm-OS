@@ -37,7 +37,7 @@
     0b01110111\
 }}
 
-extern CHAR_BMP ascii[] = {
+CHAR_BMP ascii[] = {
     NULLCHAR,
     UNDEFINED,
     UNDEFINED,
