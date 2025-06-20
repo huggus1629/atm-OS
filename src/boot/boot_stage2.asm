@@ -7,7 +7,7 @@
 %include "pointers.mac.asm"
 WIDTH       equ 1024    ; 8x16 font -> 128x48 character display
 HEIGHT      equ 768
-BPP         equ 32
+BPP         equ 24
 MEM_MODEL   equ 6       ; 6 = direct color
 ; ==============================
 ; Import global symbols

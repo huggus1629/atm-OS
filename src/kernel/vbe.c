@@ -43,12 +43,13 @@ int VBE_InitGraphics(void)
 
     FrameBufferInfo.DisplayWidth = (uint16_t) VBE_MODE_INFBUF_PTR->XResolution;
     FrameBufferInfo.DisplayHeight = (uint16_t) VBE_MODE_INFBUF_PTR->YResolution;
+    FrameBufferInfo.BPP = (uint8_t) VBE_MODE_INFBUF_PTR->BitsPerPixel;
     FrameBufferInfo.Base = (uint32_t*) VBE_MODE_INFBUF_PTR->PhysBasePtr;
     FrameBufferInfo.Pitch = (uint16_t) (Ver3Offset ?
                                         VBE_MODE_INFBUF_PTR->LinBytesPerScanLine :
                                         VBE_MODE_INFBUF_PTR->BytesPerScanLine);
                                         // use "Lin" prefix if on VBE 3.0+
-    FrameBufferInfo.PxWidth = VBE_MODE_INFBUF_PTR->BitsPerPixel / 8;
+    FrameBufferInfo.PxWidth = FrameBufferInfo.BPP / 8;
     
     FrameBufferInfo.RedLSBOffset = (uint8_t) VMI_GetVersionDependent(RedFieldPosition, Ver3Offset);
     FrameBufferInfo.GreenLSBOffset = (uint8_t) VMI_GetVersionDependent(GreenFieldPosition, Ver3Offset);

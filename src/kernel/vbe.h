@@ -68,6 +68,7 @@ typedef struct
 {
     uint16_t DisplayWidth;
     uint16_t DisplayHeight;
+    uint8_t BPP;
     uint32_t* Base;
     uint16_t Pitch;  // Bytes per scanline
     uint16_t PxWidth;
