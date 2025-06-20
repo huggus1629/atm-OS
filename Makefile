@@ -1,6 +1,6 @@
 ASM=nasm
 CC=gcc
-CFLAGS=-ffreestanding -m32 -fno-pic
+CFLAGS=-march=i386 -O2 -fno-builtin -ffreestanding -m32 -fno-pic
 LD=ld
 LDFLAGS=-m elf_i386 -s -T linker.ld
 BOOT_DIR=src/boot
